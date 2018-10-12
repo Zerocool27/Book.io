@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Main View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="Book_io" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UdS-vc-Ptv" userLabel="MainContainer">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x43-dn-WTI" userLabel="TopContainer">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QHM-gj-jBV" userLabel="AddButton">
+                                                <rect key="frame" x="10" y="10" width="30" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="30" id="SvW-pZ-M4b"/>
+                                                    <constraint firstAttribute="height" constant="30" id="cGI-Fo-0gs"/>
+                                                </constraints>
+                                                <state key="normal" title="Add" image="add_button"/>
+                                                <connections>
+                                                    <action selector="addButtonOnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8Wu-Rt-7e7"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Books" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RQ-zt-6SI">
+                                                <rect key="frame" x="163" y="15" width="49.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="0RQ-zt-6SI" firstAttribute="centerX" secondItem="x43-dn-WTI" secondAttribute="centerX" id="32V-l2-zpm"/>
+                                            <constraint firstItem="0RQ-zt-6SI" firstAttribute="centerY" secondItem="x43-dn-WTI" secondAttribute="centerY" id="Am2-dY-xxV"/>
+                                            <constraint firstItem="QHM-gj-jBV" firstAttribute="leading" secondItem="x43-dn-WTI" secondAttribute="leading" constant="10" id="HUT-WN-Gvd"/>
+                                            <constraint firstItem="QHM-gj-jBV" firstAttribute="centerY" secondItem="x43-dn-WTI" secondAttribute="centerY" id="Ibu-yh-AJ0"/>
+                                            <constraint firstAttribute="height" constant="50" id="lnA-vn-VwC"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UdJ-Em-oKK" userLabel="BottomContainer">
+                                        <rect key="frame" x="0.0" y="50" width="375" height="597"/>
+                                        <subviews>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Nv-nA-pgp">
+                                                <rect key="frame" x="10" y="10" width="355" height="587"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            </tableView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="8Nv-nA-pgp" firstAttribute="top" secondItem="UdJ-Em-oKK" secondAttribute="top" constant="10" id="MAA-tP-vAA"/>
+                                            <constraint firstAttribute="trailing" secondItem="8Nv-nA-pgp" secondAttribute="trailing" constant="10" id="k4v-UV-2hy"/>
+                                            <constraint firstAttribute="bottom" secondItem="8Nv-nA-pgp" secondAttribute="bottom" id="meh-ND-eG9"/>
+                                            <constraint firstItem="8Nv-nA-pgp" firstAttribute="leading" secondItem="UdJ-Em-oKK" secondAttribute="leading" constant="10" id="xZj-f0-74p"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="x43-dn-WTI" secondAttribute="trailing" id="3E4-d7-pIl"/>
+                                    <constraint firstAttribute="bottom" secondItem="UdJ-Em-oKK" secondAttribute="bottom" id="EKe-l5-1aY"/>
+                                    <constraint firstAttribute="trailing" secondItem="UdJ-Em-oKK" secondAttribute="trailing" id="RQt-un-Gyw"/>
+                                    <constraint firstItem="UdJ-Em-oKK" firstAttribute="leading" secondItem="UdS-vc-Ptv" secondAttribute="leading" id="U97-1B-XSH"/>
+                                    <constraint firstItem="x43-dn-WTI" firstAttribute="top" secondItem="UdS-vc-Ptv" secondAttribute="top" id="g09-eq-38G"/>
+                                    <constraint firstItem="x43-dn-WTI" firstAttribute="leading" secondItem="UdS-vc-Ptv" secondAttribute="leading" id="sUX-7K-fsm"/>
+                                    <constraint firstItem="UdJ-Em-oKK" firstAttribute="top" secondItem="x43-dn-WTI" secondAttribute="bottom" id="tI0-eJ-Zce"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="UdS-vc-Ptv" secondAttribute="trailing" id="Mna-XV-a0H"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="UdS-vc-Ptv" secondAttribute="bottom" id="acC-tu-pSm"/>
+                            <constraint firstItem="UdS-vc-Ptv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="tGs-MF-aP1"/>
+                            <constraint firstItem="UdS-vc-Ptv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ywy-yw-XMx"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="bookTableView" destination="8Nv-nA-pgp" id="gZ8-Fk-kf5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="add_button" width="50" height="50"/>
+    </resources>
+</document>
