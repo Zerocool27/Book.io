@@ -7,12 +7,18 @@
 //
 
 import UIKit
-
+protocol BookCellDelegate {
+    func bookcell(_ bookCell : BookCell, deleteBookById: Int)
+}
 class BookCell: UITableViewCell {
     
     static let reuseIdentifier = "BookCell"
     static let cellHeight: CGFloat = 80
+    var delegate: BookCellDelegate?
 
+    @IBAction func deleteOnClick(_ sender: Any) {
+        delegate?.bookcell(self, deleteBookById: id)
+    }
     @IBOutlet weak var bookTitle: UILabel!
     @IBOutlet weak var bookAuthor: UILabel!
     var categories = ""

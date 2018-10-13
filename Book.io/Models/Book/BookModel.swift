@@ -37,16 +37,6 @@ class BookModel: BaseModel {
         title <- map["title"]
         updatedAt <- map["updated_at"]
         createdAt <- map["created_at"]
-        print("lastCheckedOut",lastCheckedOut)
-        print("lastCheckedOutBy",lastCheckedOutBy)
-        let customDateFormatter = DateFormatter.customDateFormatter
-        if let checkoutDate = customDateFormatter.date(from: lastCheckedOut){
-            let checkoutFormatter = DateFormatter()
-            checkoutFormatter.dateFormat = "MMMM d, yyyy hh:mmA"
-            print(checkoutFormatter.string(from: checkoutDate))
-
-        }
-        
     }
 }
 
@@ -58,9 +48,20 @@ extension BookModel {
         
         if let checkoutDate = customDateFormatter.date(from: lastCheckedOut){
             let checkoutFormatter = DateFormatter()
-            checkoutFormatter.dateFormat = "MMMM d, yyyy hh:mmA"
-            return lastCheckedOutBy + "@ \(checkoutFormatter.string(from: checkoutDate))"
+            checkoutFormatter.dateFormat = "MMMM d, yyyy h:mm a"
+            return lastCheckedOutBy + " @ \(checkoutFormatter.string(from: checkoutDate))"
         }
         return ""
     }
+}
+
+
+// MARK: - Equatable
+
+extension BookModel: Equatable {
+    
+    static func == (lhs: BookModel, rhs: BookModel) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
 }

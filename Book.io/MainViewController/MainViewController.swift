@@ -10,12 +10,16 @@ import UIKit
 
 class MainViewController: UIViewController {
 
+    @IBOutlet weak var topContainer: UIView!
     @IBOutlet weak var bookTableView: UITableView!
     @IBAction func addButtonOnClick(_ sender: Any) {
         //OPEN ADD BOOK VIEWCONTROLLER
         setupAddViewController()
         self.present(addViewController, animated: true, completion: nil)
 
+    }
+    @IBAction func cleanAllOnClick(_ sender: Any) {
+        cleanAllBooks()
     }
     //Private variables
     fileprivate var bookList = [BookModel]() //IMPLEMENT BOOK MODEL
@@ -30,13 +34,18 @@ extension MainViewController{
         super.viewDidLoad()
         setupView()
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        loadAllBooks() //REFRESH LIST
+    }
 }
 
 //MARK: Setup Methods
 extension MainViewController {
     func setupView(){
+        topContainer.addShadowWith(radius: 2, opacity: 0.1, offSet: CGSize(width: 0, height: 2))
         setupTableView()
-        setupDetailViewController()
+        
     }
     func setupTableView(){
         bookTableView.delegate = self
@@ -77,6 +86,8 @@ extension MainViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: BookCell.reuseIdentifier, for: indexPath) as! BookCell
         cell.selectionStyle = .none
+        cell.delegate = self
+        cell.addShadowWith(radius: 2, opacity: 0.1, offSet: CGSize(width: 0, height: 2))
         if let currentModel = bookList[optional: indexPath.row] {
             cell.setWithBook(currentModel, atRow: indexPath.row)
         }
@@ -92,7 +103,7 @@ extension MainViewController: UITableViewDataSource{
 
 //MARK: API Calls
 extension MainViewController {
-    @objc func loadAllBooks() {
+    func loadAllBooks() {
         ApiManager.shared.getBookList { [weak self] (error, model) in
             DispatchQueue.main.async { [weak self] in
                 if let error = error as? ServerError {
@@ -110,8 +121,41 @@ extension MainViewController {
             }
         }
     }
+    func cleanAllBooks(){
+        //DELETE BOOK
+        ApiManager.shared.cleanBookLibrary { [weak self] error in
+            if let error = error as? ServerError {
+                self?.present(AlertHelper.shared.alertErrorWith(title: nil,
+                                                                message: error.message,
+                                                                okAction: nil),
+                              animated: true)
+            } else {
+                self?.bookList.removeAll()
+                self?.bookTableView.reloadData()
+            }
+        }
+    }
+}
+//MARK: Helper Methods
+extension MainViewController{
     func loadSingleBookDetail(book: BookModel) {
         let detailVC = DetailViewController.instantiate(book: book)
         self.present(detailVC, animated: true, completion: nil)
+    }
+}
+
+extension MainViewController: BookCellDelegate{
+    func bookcell(_ bookCell: BookCell, deleteBookById: Int) {
+        //DELETE BOOK
+        ApiManager.shared.deleteBook(bookId: deleteBookById) { [weak self] error in
+            if let error = error as? ServerError {
+                self?.present(AlertHelper.shared.alertErrorWith(title: nil,
+                                                                message: error.message,
+                                                                okAction: nil),
+                              animated: true)
+            } else {
+                self?.loadAllBooks()
+            }
+        }
     }
 }

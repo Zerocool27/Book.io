@@ -12,11 +12,8 @@ extension DateFormatter {
     
     static var customDateFormatter: DateFormatter {
         let formatter = DateFormatter()
-        //formatter.calendar = Calendar(identifier: .iso8601)
         formatter.timeZone = TimeZone(identifier: "UTC")
-        //dateFormatter.timeZone = NSTimeZone(name: "UTC")
-
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSSXXXXX"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ssZ"
         return formatter
     }
     

@@ -10,6 +10,7 @@ import UIKit
 
 class AddViewController: UIViewController{
     
+    @IBOutlet weak var topContainer: UIView!
     @IBOutlet weak var categories: UITextField!
     @IBOutlet weak var publisher: UITextField!
     @IBOutlet weak var author: UITextField!
@@ -24,7 +25,7 @@ class AddViewController: UIViewController{
         }
     }
     @IBAction func submitButtonOnClick(_ sender: Any) {
-        
+        createNewBook()
     }
     
     
@@ -42,6 +43,7 @@ extension AddViewController{
 extension AddViewController {
     
     func setupView(){
+        topContainer.addShadowWith(radius: 2, opacity: 0.1, offSet: CGSize(width: 0, height: 2))
         setupDoneButton()
         setupSubmitButton()
     }
@@ -83,5 +85,54 @@ extension AddViewController{
             alert.dismiss(animated: true, completion: nil)
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+    func showInvalidFormPopup(){
+        let alert = UIAlertController(title: "You have missing fields!", message: "Please fill the form properly", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { (action: UIAlertAction!) in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+}
+
+//MARK: API Call & Validation
+extension AddViewController{
+    
+    func isAuthorInValid() -> Bool{
+        return author.text?.isEmpty ?? true
+    }
+    func isCategoriesInValid() -> Bool{
+        return categories.text?.isEmpty ?? true
+    }
+    func isPublisherInValid() -> Bool{
+        return publisher.text?.isEmpty ?? true
+    }
+    func isTitleInValid() -> Bool{
+        return bookTitle.text?.isEmpty ?? true
+    }
+    
+    func createNewBook(){
+        
+        if !isAuthorInValid() && !isCategoriesInValid() && !isPublisherInValid() && !isTitleInValid(){
+            let authorStr = author.text!
+            let categoryStr = categories.text!
+            let publisherStr = publisher.text!
+            let titleStr = bookTitle.text!
+            ApiManager.shared.addBook(author:authorStr, categories:categoryStr, publisher: publisherStr, title: titleStr) { [unowned self] (error, model) in
+                if let error = error as? ServerError {
+                    DispatchQueue.main.async { [unowned self] () in
+                        self.present(AlertHelper.shared.alertErrorWith(title: nil,
+                                                                       message: error.message),
+                                     animated: true,
+                                     completion: nil)
+                    }
+                } else {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }else{
+            //SHOW ALERT
+            showInvalidFormPopup()
+        }
     }
 }

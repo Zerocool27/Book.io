@@ -28,8 +28,6 @@ typealias CoreRequestCompletionBlock = (Error?, Any?, HTTPURLResponse?) -> Void
 
 class RequestManager: NSObject {
     static let shared = RequestManager()
-    weak var lastUploadRequest: Request?
-    
     override init() {
         super.init()
     }
@@ -55,56 +53,6 @@ extension RequestManager {
             self.parse(response: response.response, value: response.result.value, error: response.result.error, completion: completion)
         }
     }
-    
-    func uploadDataWith(url: URL, method: HTTPMethod, shouldAuth: Bool, resultType: ResponseResultType = .json, timeout: TimeInterval = REQUEST_TIMEOUT, multipartFormDataCompletion: @escaping (Alamofire.MultipartFormData) -> Swift.Void, progressCompletion: CoreRequestProgressCompletionBlock? = nil, completion: @escaping CoreRequestCompletionBlock) {
-        assert(Thread.isMainThread, "fetchURL called using a thread other than main!")
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = method.rawValue
-        request.setValue(RequestContentType.multipart.rawValue, forHTTPHeaderField: "Content-Type")
-        request.timeoutInterval = timeout
-        
-        
-        Alamofire.upload(multipartFormData: multipartFormDataCompletion, with: request, encodingCompletion: { (result) in
-            switch result {
-            case .success(let uploadRequest, _, _):
-                self.lastUploadRequest = uploadRequest
-                if resultType == .json  {
-                    uploadRequest.responseJSON(completionHandler: { (response) in
-                        print("Response:",response.description)
-                        self.parse(response: response.response, value: response.result.value, error: response.result.error, completion: completion)
-                    })
-                } else {
-                    uploadRequest.responseData(completionHandler: { (response) in
-                        print("Response:",response.description)
-                        self.parse(response: response.response, value: response.result.value, error: response.result.error, completion: completion)
-                    })
-                }
-                uploadRequest.uploadProgress(closure: { (progress) in
-                    if let completion = progressCompletion {
-                        completion(progress)
-                    }
-                })
-            case .failure(let error):
-                print("ERROR:",error.localizedDescription)
-            }
-        })
-    }
-    
-    func downloadRequest(url: String,
-                         progressCompletion: CoreRequestProgressCompletionBlock? = nil,
-                         completion: @escaping CoreRequestCompletionBlock) {
-        
-        
-        Alamofire.request(url).downloadProgress { progress in
-            if let completion = progressCompletion {
-                completion(progress)
-            }
-            }.responseData { response in
-                self.parse(response: response.response, value: response.result.value, error: response.result.error, completion: completion)
-        }
-    }
-    
 }
 
 // MARK: - Private methods
@@ -125,6 +73,8 @@ fileprivate extension RequestManager {
             completion(nil, JSONResponseArray, response)
         } else if let dataResponse = value as? Data {
             completion(nil, dataResponse, response)
+        }else{
+            completion(nil, nil, response)
         }
     }
     
